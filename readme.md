@@ -129,6 +129,10 @@ $ pnpm resource:add -- --name documents
 - `users.service.ts` business logic layer, it contains all the validations and high level operations, make sure to have all the system logic here.
 - `users.yml` serverless functions configuration.
 
+### TODO
+
+- Implement projection/pagination/filtering support in `base.repository`
+
 ### References
 
 - https://www.serverless.com/framework/docs
