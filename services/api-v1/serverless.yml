@@ -44,8 +44,8 @@ custom:
       noStart: true
       migrate: true
 
-  offline:
-    useChildProcesses: true
+  serverless-offline:
+    httpPort: 3666
 
   esbuild:
     bundle: true
