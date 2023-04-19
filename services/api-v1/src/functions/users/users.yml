@@ -1,0 +1,70 @@
+getUsers:
+  tags:
+    RESOURCE: users
+    OPERATION: getAll
+  handler: src/functions/users/controller.getAll
+  description: Get all user instances
+  memorySize: 256
+  events:
+    - http:
+        method: GET
+        path: "/users"
+        cors: true
+
+getUser:
+  tags:
+    RESOURCE: users
+    OPERATION: getBy
+  handler: src/functions/users/controller.getBy
+  description: Get user instance
+  memorySize: 256
+  events:
+    - http:
+        method: GET
+        path: "/users/{id}"
+        cors: true
+
+createUser:
+  tags:
+    RESOURCE: users
+    OPERATION: create
+  handler: src/functions/users/controller.create
+  description: Create user instance
+  memorySize: 256
+  events:
+    - http:
+        method: POST
+        path: "/users"
+        cors: true
+        request:
+          schemas:
+            application/json: ${file(./src/functions/users/dto/create.dto.schema.yml)}
+
+updateUser:
+  tags:
+    RESOURCE: users
+    OPERATION: update
+  handler: src/functions/users/controller.update
+  description: Update user instance
+  memorySize: 256
+  events:
+    - http:
+        method: PATCH
+        path: "/users/{id}"
+        cors: true
+        request:
+          schemas:
+            application/json: ${file(./src/functions/users/dto/update.dto.schema.yml)}
+
+deleteUser:
+  handler: src/functions/users/controller.remove
+  description: Delete user instance
+  tags:
+    RESOURCE: users
+    OPERATION: delete
+  memorySize: 256
+  events:
+    - http:
+        method: DELETE
+        path: "/users/{id}"
+        cors: true
