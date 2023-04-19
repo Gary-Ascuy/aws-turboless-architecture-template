@@ -1,0 +1,21 @@
+{
+  "name": "core-functions",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "check:updates": "npx npm-check-updates",
+    "check:updates:u": "npx npm-check-updates -u && pnpm i",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@middy/core": "^4.2.8",
+    "@middy/http-json-body-parser": "^4.2.8"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.114",
+    "json-schema-to-ts": "^2.7.2"
+  }
+}
