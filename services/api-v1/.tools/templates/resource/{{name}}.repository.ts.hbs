@@ -1,0 +1,44 @@
+import dynamoose from "dynamoose";
+import type { ModelType } from "dynamoose/dist/General";
+import type { Item } from "dynamoose/dist/Item";
+import { inject, injectable } from "inversify";
+
+import { IBaseRepository } from "@core/data.layer";
+import { types } from "@config/types";
+
+import { I{{className name}}Entity } from "./entities/{{singularize name}}.entity";
+import { IConfigService } from "@config/config.server";
+
+export const {{className name}}Schema = new dynamoose.Schema(
+  {
+    id: {
+      type: String,
+      hashKey: true,
+    },
+    name: {
+      type: String,
+    },
+  },
+  {
+    saveUnknown: true,
+    timestamps: true,
+  }
+);
+
+@injectable()
+export abstract class I{{className name}}Repository extends IBaseRepository<I{{className name}}Entity> {}
+
+@injectable()
+export class {{className name}}Repository extends I{{className name}}Repository {
+  readonly table: string;
+  readonly partitionKey: string = "id";
+
+  readonly model: ModelType<Item>;
+
+  constructor(@inject(types.IConfigService) private readonly config: IConfigService) {
+    super();
+
+    this.table = this.config.getTableName("{{snakeCase name}}");
+    this.model = dynamoose.model(this.table, {{className name}}Schema);
+  }
+}

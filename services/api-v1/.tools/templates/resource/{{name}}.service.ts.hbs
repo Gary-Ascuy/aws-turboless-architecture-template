@@ -1,0 +1,45 @@
+import { inject, injectable } from "inversify";
+
+import { IQuery } from "src/core/data.layer";
+import { I{{className name}}Entity } from "./entities/{{singularize name}}.entity";
+import { I{{className name}}Repository } from "./{{name}}.repository";
+import { types } from "@config/types";
+
+export interface I{{className name}}Service {
+  getAll(query: IQuery): Promise<I{{className name}}Entity[]>;
+  getBy(id: string, query: IQuery): Promise<I{{className name}}Entity>;
+
+  create(data: I{{className name}}Entity, query: IQuery): Promise<I{{className name}}Entity>;
+  update(id: string, data: I{{className name}}Entity, query: IQuery): Promise<I{{className name}}Entity>;
+  delete(id: string, query: IQuery): Promise<I{{className name}}Entity>;
+}
+
+@injectable()
+export class {{className name}}Service implements I{{className name}}Service {
+  constructor(@inject(types.I{{className name}}Repository) private readonly {{camelCase name}}: I{{className name}}Repository) {}
+
+  async getAll(query: IQuery): Promise<I{{className name}}Entity[]> {
+    // TODO: Add validations
+    return this.{{camelCase name}}.getAll(query);
+  }
+
+  async getBy(id: string, query: IQuery): Promise<I{{className name}}Entity> {
+    // TODO: Add validations
+    return this.{{camelCase name}}.getBy(id, query);
+  }
+
+  async create(data: I{{className name}}Entity, query: IQuery): Promise<I{{className name}}Entity> {
+    // TODO: Add validations
+    return this.{{camelCase name}}.create(data, query);
+  }
+
+  async update(id: string, data: I{{className name}}Entity, query: IQuery): Promise<I{{className name}}Entity> {
+    // TODO: Add validations
+    return this.{{camelCase name}}.update(id, data, query);
+  }
+
+  async delete(id: string, query: IQuery): Promise<I{{className name}}Entity> {
+    // TODO: Add validations
+    return this.{{camelCase name}}.delete(id, query);
+  }
+}

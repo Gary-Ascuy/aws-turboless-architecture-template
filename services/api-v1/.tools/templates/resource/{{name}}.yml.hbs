@@ -1,0 +1,70 @@
+get{{pascalCase name}}:
+  tags:
+    RESOURCE: {{name}}
+    OPERATION: getAll
+  handler: src/functions/{{name}}/controller.getAll
+  description: Get all {{lowerCase (singularize name)}} instances
+  memorySize: 256
+  events:
+    - http:
+        method: GET
+        path: "/{{name}}"
+        cors: true
+
+get{{className name}}:
+  tags:
+    RESOURCE: {{name}}
+    OPERATION: getBy
+  handler: src/functions/{{name}}/controller.getBy
+  description: Get {{lowerCase (singularize name)}} instance
+  memorySize: 256
+  events:
+    - http:
+        method: GET
+        path: "/{{name}}/{id}"
+        cors: true
+
+create{{className name}}:
+  tags:
+    RESOURCE: {{name}}
+    OPERATION: create
+  handler: src/functions/{{name}}/controller.create
+  description: Create {{lowerCase (singularize name)}} instance
+  memorySize: 256
+  events:
+    - http:
+        method: POST
+        path: "/{{name}}"
+        cors: true
+        request:
+          schemas:
+            application/json: ${file(./src/functions/{{name}}/dto/create.dto.schema.yml)}
+
+update{{className name}}:
+  tags:
+    RESOURCE: {{name}}
+    OPERATION: update
+  handler: src/functions/{{name}}/controller.update
+  description: Update {{lowerCase (singularize name)}} instance
+  memorySize: 256
+  events:
+    - http:
+        method: PATCH
+        path: "/{{name}}/{id}"
+        cors: true
+        request:
+          schemas:
+            application/json: ${file(./src/functions/{{name}}/dto/update.dto.schema.yml)}
+
+delete{{className name}}:
+  handler: src/functions/{{name}}/controller.remove
+  description: Delete {{lowerCase (singularize name)}} instance
+  tags:
+    RESOURCE: {{name}}
+    OPERATION: delete
+  memorySize: 256
+  events:
+    - http:
+        method: DELETE
+        path: "/{{name}}/{id}"
+        cors: true
