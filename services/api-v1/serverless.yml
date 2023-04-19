@@ -1,0 +1,82 @@
+service: ${self:custom.serviceName}
+frameworkVersion: 3.29.0
+
+plugins:
+  - serverless-esbuild
+  - serverless-dynamodb-local
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: dev
+  region: us-east-1
+  deploymentMethod: direct
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:*:*
+
+  environment:
+    APP_PREFIX: "${self:custom.appPrefix}"
+    STAGE: "${sls:stage}"
+    DB_PREFIX: "${self:custom.dbPrefix}"
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+    NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000"
+
+functions:
+  - ${file(./src/functions/users/users.yml)}
+
+custom:
+  serviceName: test-api-v1
+  appPrefix: test_app
+  dbPrefix: "${self:custom.appPrefix}_${sls:stage}__"
+
+  dynamodb:
+    stages:
+      - dev
+    start:
+      image: dynamodb
+      port: "8000"
+      noStart: true
+      migrate: true
+
+  offline:
+    useChildProcesses: true
+
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    exclude:
+      - aws-sdk
+    target: node18
+    define:
+      "require.resolve": "undefined"
+    platform: node
+    concurrency: 10
+
+resources:
+  Resources:
+    users:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Delete
+      Properties:
+        TableName: "${self:custom.dbPrefix}users"
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: name
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+package:
+  individually: true
