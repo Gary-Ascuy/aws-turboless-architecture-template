@@ -1,0 +1,37 @@
+{
+  "name": "test-api-v1",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm schema:generate && serverless offline start --reloadHandler",
+    "check:updates": "npx npm-check-updates",
+    "check:updates:u": "npx npm-check-updates -u && pnpm i",
+    "deploy:staging": "pnpm schema:generate && serverless deploy --aws-profile $AWS_PROFILE --stage staging --verbose",
+    "deploy:production": "pnpm schema:generate && serverless deploy --aws-profile $AWS_PROFILE --stage production --verbose",
+    "test": "vitest run --coverage --passWithNoTests",
+    "test:watch": "vitest --passWithNoTests",
+    "lint": "eslint '**/*.ts'",
+    "lint:fix": "eslint '**/*.ts' --fix",
+    "package": "pnpm schema:generate && serverless package",
+    "schema:generate": "find . -type f -name '*.dto.schema.ts' -exec ts-node .tools/convert.ts {} \\; && echo 'Successfully completed schema generation\\n'",
+    "resource:add": "pnpm plop resource"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/lodash": "^4.14.192",
+    "eslint": "^8.37.0",
+    "inflection": "^2.0.1",
+    "js-yaml": "^4.1.0",
+    "plop": "^3.1.2",
+    "tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.303.0",
+    "@aws-sdk/util-dynamodb": "^3.303.0",
+    "dynamoose": "^3.1.0",
+    "core-functions": "workspace:*",
+    "inversify": "^6.0.1",
+    "lodash": "^4.17.21",
+    "reflect-metadata": "^0.1.13"
+  }
+}
