@@ -44,6 +44,19 @@ $ docker-compose up
 $ pnpm dev
 ```
 
+**Test Local API**
+
+```sh
+# Create User (POST)
+$ curl -d '{"id":"@garyascuy", "name":"Gary Ascuy"}' \
+    -H "Content-Type: application/json" \
+    -X POST \
+    http://localhost:3666/dev/users
+
+# Get All Users
+$ curl http://localhost:3666/dev/users
+```
+
 ### Add Resources (CRUD) - Tooling
 
 ```sh
